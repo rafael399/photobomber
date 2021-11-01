@@ -15,9 +15,23 @@ class Album extends Model
     use HasFactory;
 
     protected $guarded = [];
+    // Aditional fields
+    protected $appends = array('photoCount', 'coverPhoto');
 
     public function photos() : BelongsToMany
     {
         return $this->belongsToMany(Photo::class);
+    }
+
+    // Returns how many photos the album have
+    public function getPhotoCountAttribute()
+    {
+        return $this->photos()->count();
+    }
+
+    // Returns first photo to use as the album cover
+    public function getCoverPhotoAttribute()
+    {
+        return $this->photos()->first();
     }
 }
